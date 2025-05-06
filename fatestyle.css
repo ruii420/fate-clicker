@@ -1,0 +1,85 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Arial', sans-serif;
+	line-height: 1.6;
+	background: linear-gradient(to bottom, #ADD8E6, #3a3a9e, #FFFFFF);
+}
+
+
+
+header {
+	background-color: #b0bfff;
+	padding: 0.05rem, 4rem;
+	position: sticky;
+	top: 0;
+	z-index: 1000; 
+	width: 100%; 
+}
+
+
+
+
+
+footer {
+	text-align: center;
+	padding: 20px;
+	background-color: #222;
+	color: white;
+}
+
+
+
+
+
+.title {
+	text-align: center;
+	margin-bottom: 20px; 
+	color: rgb(255, 255, 255); 
+}
+
+.grail-click {
+	text-align: center;
+	cursor: pointer;
+  }
+  
+  #click-button {
+	width: 150px;
+	height: auto;
+	transition: 0.2s;
+  }
+  
+  #click-button:hover {
+	transform: scale(1.1);
+	filter: brightness(1.2);
+  }
+
+  #click-button:active {
+	transform: scale(0.9);
+	transition: transform 0.1s ease;
+  }
+
+  .upgrade-button {
+	background-color: #4a4aff;
+	color: white;
+	padding: 12px 20px;
+	margin: 10px;
+	border: none;
+	border-radius: 12px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: transform 0.15s, background-color 0.2s;
+  }
+  
+  .upgrade-button:hover {
+	background-color: #3535cc;
+	transform: scale(1.05);
+  }
+  
+  .upgrade-button:active {
+	transform: scale(0.95);
+  }
+  
