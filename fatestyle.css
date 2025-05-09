@@ -4,13 +4,24 @@
 }
 
 body {
-	font-family: 'Arial', sans-serif;
-	line-height: 1.6;
-	background: linear-gradient(to bottom, #ADD8E6, #3a3a9e, #FFFFFF);
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-image: url("images/background3.jpg");
+    background-size: cover; 
+    background-repeat: no-repeat; 
 }
 
-
-
+.text_color {
+	color: white;
+	font-family: 1200;
+  }
+  
+#mana-count {
+	color:white;
+}
+#mana-rate {
+	color:white;
+}
 header {
 	background-color: #b0bfff;
 	padding: 0.05rem, 4rem;
@@ -40,7 +51,9 @@ footer {
 	color: white;
 }
 
-
+#no_mana {
+	text-align: center;
+}
 
 
 
@@ -54,25 +67,26 @@ footer {
 	text-align: center;
 	cursor: pointer;
   }
-  
-  #click-button {
+
+.button {
 	width: 150px;
 	height: auto;
 	transition: 0.2s;
   }
   
-  #click-button:hover {
+.button:hover {
 	transform: scale(1.1);
 	filter: brightness(1.2);
   }
 
-  #click-button:active {
+.button:active {
 	transform: scale(0.9);
 	transition: transform 0.1s ease;
   }
 
-  .upgrade-button {
-	background-color: #37d0ff;
+  .upgrade-button
+  {
+	background-color: #d41111;
 	color: white;
 	padding: 12px 20px;
 	margin: 10px;
@@ -83,8 +97,9 @@ footer {
 	transition: transform 0.15s, background-color 0.2s;
   }
   
-  .upgrade-button:hover {
-	background-color: #2faacf;
+  .upgrade-button:hover
+  {
+	background-color: #8b0c0c;
 	transform: scale(1.05);
   }
   
@@ -92,3 +107,18 @@ footer {
 	transform: scale(0.95);
   }
   
+  #upgrades {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 20px;
+  }
+  
+  #upgrades > div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+
+
+
