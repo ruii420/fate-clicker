@@ -12,6 +12,22 @@ const noManaText = document.getElementById("no_mana");
 const servantArea = document.getElementById("summoned-servants");
 const summonedServants = {};
 
+const sounds = {
+  click: new Audio('sounds/click.mp3'),
+  evolve: new Audio('sounds/evolve.mp3'),
+  summon: new Audio('sounds/summon.mp3')
+};
+
+
+function playSound(soundType) {
+ 
+      sounds[soundType].play();
+    
+}
+
+
+window.playSound = playSound;
+
 function updateDisplay() {
   manaDisplay.textContent = `Mana: ${Math.floor(mana)} MP`;
   let baseRate = 0;
@@ -29,6 +45,7 @@ function updateDisplay() {
   displayText += ` | Click: +${clickPower} MP`;
   manaPerSecDisplay.textContent = displayText;
   manaPerSecDisplay.classList.add("text_color");
+  updateGrailImage(mana);
 }
 
 
@@ -91,6 +108,7 @@ function summonServant(upg) {
 
   if (mana >= upg.cost) {
     mana -= upg.cost;
+    window.playSound('summon')
     summonedServants[upg.name] = {
       evolutionLevel: 0,
       data: upg,
@@ -146,6 +164,7 @@ function evolveServant(servantName, stage, button) {
     mana -= evolveCost;
     servant.evolutionLevel = stage;
     servant.value = newValue;
+    window.playSound('evolve')
     const servantImages = servantArea.getElementsByTagName("img");
     for (let img of servantImages) {
       if (img.alt === servantName) {
@@ -277,7 +296,49 @@ function saveGame() {
   }
   localStorage.setItem('idleGameSave', JSON.stringify(gameData));
 }
+const grailThresholds = [
+  { mana: 0, image: "images/Holy_Grail.png" },     
+  { mana: 100, image: "images/Holy_Grail2.png" },  
+  { mana: 250, image: "images/Holy_Grail3.png" },  
+  { mana: 750, image: "images/Holy_Grailglow1.png" },  
+  { mana: 1250, image: "images/Holy_Grailglow2.png" },  
+  { mana: 2500, image: "images/Holy_Grailglow3.png" },  
+  { mana: 5000, image: "images/Holy_Grailglow4.png" },
+  { mana: 10000, image: "images/greater_grail.jpg" }   
+];
+function getCurrentGrailImage(currentMana) {
+  const sortedThresholds = [...grailThresholds].sort((a, b) => b.mana - a.mana);
+  
+  for (const threshold of sortedThresholds) {
+    if (currentMana >= threshold.mana) {
+      return threshold.image;
+    }
+  }
+  return grailThresholds[0].image;
+}
 
+
+function updateGrailImage(currentMana) {
+  const grailImage = document.getElementById("click-button");
+  if (!grailImage) return;
+  const newImageSrc = getCurrentGrailImage(currentMana);
+  if (grailImage.src.split('/').pop() !== newImageSrc.split('/').pop()) {
+    grailImage.src = newImageSrc;
+    grailImage.classList.add("grail-upgrade");
+    setTimeout(() => {
+      grailImage.classList.remove("grail-upgrade");
+    }, 1000);
+  }
+}
+
+
+
+
+
+function initGrailSystem() {
+  
+  updateGrailImage(mana); 
+}
 const upgrades = [
   {
     name: "Saber",
@@ -357,13 +418,13 @@ const upgrades = [
     name: "Berserker",
     cost: 100,
     value: 15,
-    riskChance: 0.1,
+    riskChance: 0.3,
     penaltyPercent: 30,
     image: "images/Berserker.png",
     evolve1: {
       cost: 400,
       value: 30,
-      riskChance: 0.1,
+      riskChance: 0.2,
       penaltyPercent: 25,
       image: "images/Berserker2.png"
     },
@@ -473,8 +534,7 @@ function addResetButton() {
   const resetBtn = document.createElement("button");
   resetBtn.textContent = "Reset Game";
   resetBtn.classList.add("reset-button");
-  resetBtn.style.marginTop = "20px";
-  resetBtn.style.backgroundColor = "#ff5555";
+
   resetBtn.onclick = () => {
       localStorage.removeItem('idleGameSave');
       mana = 0;
@@ -498,8 +558,10 @@ function addResetButton() {
 function initGame() {
   loadGame();
   addResetButton();
+  initGrailSystem()
   clickButton.addEventListener("click", () => {
     gainMana(clickPower);
+    window.playSound('click')
     clickButton.classList.add("clicked");
     setTimeout(() => clickButton.classList.remove("clicked"), 150);
   });
