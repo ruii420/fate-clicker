@@ -11,20 +11,17 @@ const clickButton = document.getElementById("click-button");
 const noManaText = document.getElementById("no_mana");
 const servantArea = document.getElementById("summoned-servants");
 const summonedServants = {};
-
+const goal = document.getElementById("goal");
 const sounds = {
   click: new Audio('sounds/click.mp3'),
   evolve: new Audio('sounds/evolve.mp3'),
   summon: new Audio('sounds/summon.mp3')
 };
-
-
 function playSound(soundType) {
  
       sounds[soundType].play();
     
 }
-
 
 window.playSound = playSound;
 
@@ -38,7 +35,7 @@ function updateDisplay() {
     }
   }
   const effectiveRatePerSec = manaPerSecond * (1000/tickRate);
-  let displayText = `MP/sec: ${baseRate}  ${effectiveRatePerSec.toFixed(1)} (x${manaMultiplier})`;
+  let displayText = `MP/sec: ${baseRate}   (x${manaMultiplier})`;
   if (tickRate !== 1000) {
     displayText += ` [${(1000/tickRate).toFixed(1)}x faster]`;
   }
@@ -200,7 +197,7 @@ function evolveServant(servantName, stage, button) {
   }
 }
 
-function processRiskServant() {
+function berserkergamba() {
   if (summonedServants["Berserker"]) {
     const riskServant = summonedServants["Berserker"];
     const evolutionLevel = riskServant.evolutionLevel;
@@ -255,7 +252,7 @@ function updateTickRate() {
   }
   tickInterval = setInterval(() => {
     mana += manaPerSecond * (tickRate/1000);
-    processRiskServant();
+    berserkergamba();
     updateDisplay();
     saveGame();
   }, tickRate);
@@ -308,6 +305,9 @@ const grailThresholds = [
 ];
 function getCurrentGrailImage(currentMana) {
   const sortedThresholds = [...grailThresholds].sort((a, b) => b.mana - a.mana);
+  if (currentMana >= 10000) {
+    goal.innerHTML = "<h1>Greater Grail Summoned</h1>";
+  }
   
   for (const threshold of sortedThresholds) {
     if (currentMana >= threshold.mana) {
@@ -316,7 +316,6 @@ function getCurrentGrailImage(currentMana) {
   }
   return grailThresholds[0].image;
 }
-
 
 function updateGrailImage(currentMana) {
   const grailImage = document.getElementById("click-button");
@@ -330,9 +329,6 @@ function updateGrailImage(currentMana) {
     }, 1000);
   }
 }
-
-
-
 
 
 function initGrailSystem() {
@@ -431,7 +427,7 @@ const upgrades = [
     evolve2: {
       cost: 1000,
       value: 60,
-      riskChance: 0.08,
+      riskChance: 0.05,
       penaltyPercent: 20,
       image: "images/Berserker3.png"
     },
@@ -455,7 +451,7 @@ function createSummonButtons() {
       btn.textContent = `Summon ${upg.name} - ${upg.cost} MP (+${upg.value}/s, but ${upg.riskChance*100}% risk)`;
     }
     else if (upg.name === "Gilgamesh") {
-      btn.textContent = `Summon ${upg.name} - ${upg.cost} MP (+${upg.value}/s, 20% faster ticks)`;
+      btn.textContent = `Summon ${upg.name} - ${upg.cost} MP (+${upg.value}/s, 20% faster time)`;
     }
     else {
       btn.textContent = `Summon ${upg.name} - ${upg.cost} MP (+${upg.value}/s)`;
