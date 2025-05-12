@@ -15,7 +15,8 @@ const goal = document.getElementById("goal");
 const sounds = {
   click: new Audio('sounds/click.mp3'),
   evolve: new Audio('sounds/evolve.mp3'),
-  summon: new Audio('sounds/summon.mp3')
+  summon: new Audio('sounds/summon.mp3'),
+  holy: new Audio('sounds/holy.mp3')
 };
 function playSound(soundType) {
  
@@ -307,6 +308,7 @@ function getCurrentGrailImage(currentMana) {
   const sortedThresholds = [...grailThresholds].sort((a, b) => b.mana - a.mana);
   if (currentMana >= 10000) {
     goal.innerHTML = "<h1>Greater Grail Summoned</h1>";
+    
   }
   
   for (const threshold of sortedThresholds) {
